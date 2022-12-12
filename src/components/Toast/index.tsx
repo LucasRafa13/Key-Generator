@@ -69,7 +69,7 @@ export default function ToastComponent(props: ToastProps) {
                   className="w-full border border-transparent rounded-lg px-3 py-2 flex items-center justify-center text-sm font-medium text-purple-600 dark:text-purple-500 hover:bg-gray-50 dark:hover:bg-gray-900 focus:z-10 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
                   onClick={e => {
                     e.preventDefault()
-                    router.push(`/home/username=${username}`)
+                    router.push(`/home?username=${username}`)
                   }}
                 >
                   Entrar

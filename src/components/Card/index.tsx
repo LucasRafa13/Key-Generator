@@ -9,6 +9,7 @@ export default function Card() {
   const [username, setUsername] = React.useState<string>("")
   const [isToastOpen, setIsToastOpen] = React.useState<boolean>(false)
   const [toastType, setToastType] = React.useState<"success" | "error">("success")
+  
   const router = useRouter()
 
   useEffect(() => {
