@@ -5,8 +5,7 @@ export default function Home() {
     <div
       className={`
       flex justify-center items-center h-screen
-      gradientBackground
-
+      gradientBackground col
       text-white
     `}
     >
