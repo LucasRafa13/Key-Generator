@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-.gradientBackground {
+/* .gradientBackground {
   @apply bg-gradient-to-r from-blue-500 to-purple-500;
+} */
+
+.col {
+  @apply flex flex-col;
+}
+
+.col-center {
+  @apply flex flex-col justify-center items-center;
+}
+
+.col-center-items {
+  @apply flex flex-col items-center;
+}
+
+.col-center-just {
+  @apply flex flex-col justify-center;
 }
