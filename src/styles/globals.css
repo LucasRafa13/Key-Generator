@@ -1,7 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import "@radix-ui/colors/blackA.css";
+@import "@radix-ui/colors/violet.css";
 /* .gradientBackground {
   @apply bg-gradient-to-r from-blue-500 to-purple-500;
 } */

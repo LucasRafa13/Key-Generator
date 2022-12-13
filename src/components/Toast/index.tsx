@@ -1,23 +1,23 @@
-import * as Toast from "@radix-ui/react-toast"
-import cx from "classnames"
-import React, { useEffect } from "react"
-import { useRouter } from "next/router"
-import Link from "next/link"
+import * as Toast from "@radix-ui/react-toast";
+import cx from "classnames";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
 
 interface ToastProps {
-  open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  username: string
-  type: "error" | "success"
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  username: string;
+  type: "error" | "success";
 }
 
 export default function ToastComponent(props: ToastProps) {
-  const { open, setOpen, username, type } = props
+  const { open, setOpen, username, type } = props;
 
   const title =
     type === "success"
       ? `Você está tentando entrar com o usuário: ${username}`
-      : "Username inválido ..."
+      : "Username inválido ...";
 
   const subTitle =
     type === "success" ? (
@@ -26,9 +26,15 @@ export default function ToastComponent(props: ToastProps) {
       </Link>
     ) : (
       "Por favor, informe um username válido"
-    )
+    );
 
-  const router = useRouter()
+  const saveUsername = (event: any) => {
+    event.preventDefault();
+    localStorage.setItem("username", username);
+    router.push(`/home?username=${username}`);
+  };
+
+  const router = useRouter();
 
   return (
     <Toast.Root
@@ -67,10 +73,7 @@ export default function ToastComponent(props: ToastProps) {
                 <Toast.Action
                   altText="view now"
                   className="w-full border border-transparent rounded-lg px-3 py-2 flex items-center justify-center text-sm font-medium text-purple-600 dark:text-purple-500 hover:bg-gray-50 dark:hover:bg-gray-900 focus:z-10 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
-                  onClick={e => {
-                    e.preventDefault()
-                    router.push(`/home?username=${username}`)
-                  }}
+                  onClick={(e) => saveUsername(e)}
                 >
                   Entrar
                 </Toast.Action>
@@ -85,5 +88,5 @@ export default function ToastComponent(props: ToastProps) {
         </div>
       </div>
     </Toast.Root>
-  )
+  );
 }

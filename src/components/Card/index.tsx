@@ -1,5 +1,4 @@
-import React, { useEffect } from "react"
-import { useRouter } from "next/router"
+import React from "react"
 
 import * as Avatar from "@radix-ui/react-avatar"
 import * as Toast from "@radix-ui/react-toast"
@@ -8,13 +7,20 @@ import ToastComponent from "../Toast"
 export default function Card() {
   const [username, setUsername] = React.useState<string>("")
   const [isToastOpen, setIsToastOpen] = React.useState<boolean>(false)
-  const [toastType, setToastType] = React.useState<"success" | "error">("success")
-  
-  const router = useRouter()
+  const [toastType, setToastType] = React.useState<"success" | "error">(
+    "success"
+  )
 
-  useEffect(() => {
-    setUsername("")
-  }, [])
+  const entrar = (event: any) => {
+    event.preventDefault()
+    if (username === "") {
+      setToastType("error")
+      setIsToastOpen(true)
+      return
+    }
+    setToastType("success")
+    setIsToastOpen(true)
+  }
 
   return (
     <div className="col-center gap-5 px-4 py-10 rounded-xl shadow-2xl shadow-slate-800">
@@ -30,10 +36,12 @@ export default function Card() {
             />
           )}
           <Avatar.Fallback
-            className={"w-full h-full bg-white text-black text-2xl col-center"}
+            className={
+              "w-full h-full bg-white text-black text-2xl col-center text-center"
+            }
             delayMs={500}
           >
-            Not Found
+            Digite um usuário válido
           </Avatar.Fallback>
         </Avatar.Root>
       </div>
@@ -43,34 +51,14 @@ export default function Card() {
         type="text"
         placeholder="Digite seu usuário do GitHub."
         value={username}
-        onChange={event => {
-          // Onde ta o valor?
-          const value = event?.target?.value
-          // Trocar o valor da variavel
-          // através do React e avise quem precisa
-          setUsername(value)
-        }}
+        onChange={event => setUsername(event.target.value)}
         className="text-black px-3 py-2 rounded-lg"
       />
 
       <Toast.Provider>
         <button
           className="hover:bg-blue-600 hover:shadow-2xl hover:shadow-blue-500 bg-blue-500 w-full py-2 rounded-2xl active:bg-blue-800"
-          onClick={event => {
-            console.log("Submit")
-            // Não atualizar a página
-            event.preventDefault()
-            // Usuário não pode ser undefined
-            if (username === "") {
-              setToastType("error")
-              setIsToastOpen(true)
-              return
-            }
-            // Redirecionar para a página home
-            // passando o username como parâmetro
-            setToastType("success")
-            setIsToastOpen(true)
-          }}
+          onClick={event => entrar(event)}
         >
           <span>Entrar</span>
         </button>
