@@ -1,237 +1,118 @@
-import * as Avatar from "@radix-ui/react-avatar"
-import * as Checkbox from "@radix-ui/react-checkbox"
-import { CheckIcon } from "@radix-ui/react-icons"
-import * as Slider from "@radix-ui/react-slider"
-import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import {
-  Button,
-  ButtonOutline,
-  ConfigCard,
-  ContainerHome,
-  ContainerRange
-} from "./home.styles"
-
-interface CheckboxRootProps {
-  label: string
-  id: string
-  value: boolean
-  setValue: any
-}
-
-const caracteresEspeciaisArr = [
-  "!",
-  "@",
-  "#",
-  "$",
-  "%",
-  "^",
-  "&",
-  "*",
-  "(",
-  ")",
-  "_",
-  "+",
-  "-",
-  "=",
-  "{",
-  "}",
-  "[",
-  "]",
-  "|",
-  ":",
-  ";",
-  '"',
-  "'",
-  "<",
-  ">",
-  ",",
-  ".",
-  "?",
-  "/"
-]
-const letrasMaiusculasArr = [
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F",
-  "G",
-  "H",
-  "I",
-  "J",
-  "K",
-  "L",
-  "M",
-  "N",
-  "O",
-  "P",
-  "Q",
-  "R",
-  "S",
-  "T",
-  "U",
-  "V",
-  "W",
-  "X",
-  "Y",
-  "Z"
-]
-const letrasMinusculasArr = [
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-  "m",
-  "n",
-  "o",
-  "p",
-  "q",
-  "r",
-  "s",
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z"
-]
-const numerosArr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+import * as Avatar from '@radix-ui/react-avatar'
+import * as Slider from '@radix-ui/react-slider'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { CheckboxRoot } from '../../components/Checkbox'
+import { generatorPassword } from '../../utils/generatorPassword'
 
 export default function Home() {
-  const router = useRouter()
+	const router = useRouter()
 
-  const [caracteresEspeciais, setCaracteresEspeciais] = useState(false)
-  const [letrasMaiusculas, setLetrasMaiusculas] = useState(false)
-  const [numeros, setNumeros] = useState(false)
-  const [tamanho, setTamanho] = useState([4])
-  const [user, setUser] = useState("")
-  const [senha, setSenha] = useState("aaa")
+	const [specialCharacters, setSpecialCharacters] = useState(false)
+	const [uppercaseLetters, setUppercaseLetters] = useState(false)
+	const [numbers, setNumbers] = useState(false)
+	const [length, setLength] = useState([4])
+	const [user, setUser] = useState('')
+	const [password, setPassword] = useState('')
 
-  useEffect(() => {
-    setUser(localStorage.username)
-  }, [])
+	useEffect(() => {
+		setUser(localStorage.username)
+	}, [])
 
-  useEffect(() => {
-    if (localStorage.username === undefined) router.push("/")
-  }, [])
+	useEffect(() => {
+		localStorage.username === undefined && router.push('/')
 
-  const sort = (min: number, max: number) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min
-  }
+		localStorage.username !== router.query.username &&
+			router.push(`/home?username=${localStorage.username}`)
+	}, [router])
 
-  const gerarSenha = () => {
-    let senha = ""
-    let caracteres = ""
+	const sair = () => {
+		localStorage.removeItem('username')
+		router.push('/')
+	}
 
-    if (caracteresEspeciais) caracteres += caracteresEspeciaisArr.join("")
-    if (letrasMaiusculas) caracteres += letrasMaiusculasArr.join("")
-    if (numeros) caracteres += numerosArr.join("")
-    caracteres += letrasMinusculasArr.join("")
+	return (
+		<div className='h-full'>
+			<div className='col fixed top-1/2 left-[2%] w-[400px] -translate-y-1/2 rounded-xl bg-white p-5 text-black drop-shadow-custom md:relative md:mb-8'>
+				<h1 className={'mb-5 text-center  text-2xl font-bold text-black'}>
+					Configurações
+				</h1>
+				<CheckboxRoot
+					id='checkbox1'
+					label='Caracteres especiais'
+					setValue={setSpecialCharacters}
+					value={specialCharacters}
+				/>
+				<CheckboxRoot
+					id='checkbox2'
+					label='Letras maiúsculas'
+					value={uppercaseLetters}
+					setValue={setUppercaseLetters}
+				/>
+				<CheckboxRoot
+					id='checkbox3'
+					label='Números'
+					value={numbers}
+					setValue={setNumbers}
+				/>
 
-    for (let i = 0; i < tamanho[0]; i++) {
-      senha += caracteres[sort(0, caracteres.length - 1)]
-    }
-
-    setSenha(senha)
-  }
-
-  const sair = () => {
-    localStorage.removeItem("username")
-    router.push("/")
-  }
-
-  const CheckboxRoot = ({ id, label, setValue, value }: CheckboxRootProps) => {
-    return (
-      <div
-        style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}
-      >
-        <Checkbox.Root
-          className="CheckboxRoot"
-          defaultChecked={value}
-          id={id}
-          value={value ? "true" : "false"}
-          onCheckedChange={e => setValue(e)}
-        >
-          <Checkbox.Indicator className="CheckboxIndicator">
-            <CheckIcon />
-          </Checkbox.Indicator>
-        </Checkbox.Root>
-        <label className="Label" htmlFor={id}>
-          {label}
-        </label>
-      </div>
-    )
-  }
-
-  return (
-    <>
-      <ConfigCard>
-        <h1 className={`text-2xl font-bold`}>Configurações</h1>
-
-        <CheckboxRoot
-          id="checkbox1"
-          label="Caracteres especiais"
-          setValue={setCaracteresEspeciais}
-          value={caracteresEspeciais}
-        />
-        <CheckboxRoot
-          id="checkbox2"
-          label="Letras maiúsculas"
-          value={letrasMaiusculas}
-          setValue={setLetrasMaiusculas}
-        />
-        <CheckboxRoot
-          id="checkbox3"
-          label="Números"
-          value={numeros}
-          setValue={setNumeros}
-        />
-
-        <ContainerRange>
-          <Slider.Root
-            className="SliderRoot"
-            defaultValue={tamanho}
-            max={128}
-            step={4}
-            value={tamanho}
-            onValueChange={value => setTamanho(value)}
-            aria-label="Volume"
-          >
-            <Slider.Track className="SliderTrack">
-              <Slider.Range className="SliderRange" />
-            </Slider.Track>
-            <Slider.Thumb className="SliderThumb" />
-          </Slider.Root>
-          <span className="span">{tamanho[0]}</span>
-        </ContainerRange>
-        <Button onClick={gerarSenha}>Gerar senha</Button>
-        <ButtonOutline onClick={sair}>Sair</ButtonOutline>
-      </ConfigCard>
-      <ContainerHome>
-        <Avatar.Root className="AvatarRoot">
-          <Avatar.Image
-            className="AvatarImage"
-            src={`https://github.com/${user}.png`}
-            alt="Colm Tuite"
-          />
-          <Avatar.Fallback className="AvatarFallback" delayMs={600}>
-            {user}
-          </Avatar.Fallback>
-        </Avatar.Root>
-        <h1 className={`text-2xl font-bold`}>Sua senha é:</h1>
-        <h1 className={`text-2xl font-bold`}>{senha}</h1>
-      </ContainerHome>
-    </>
-  )
+				<div className='flex-center-items justify-start'>
+					<Slider.Root
+						className='SliderRoot flex-center-items relative h-5 w-64 touch-none touch-none select-none'
+						defaultValue={length}
+						max={128}
+						step={4}
+						value={length}
+						onValueChange={(value) => setLength(value)}
+						aria-label='Volume'
+					>
+						<Slider.Track className='relative h-1 grow rounded-full bg-violet8'>
+							<Slider.Range className='absolute h-full rounded-full bg-violet11' />
+						</Slider.Track>
+						<Slider.Thumb className='block h-5 w-5 rounded-xl bg-violet11 drop-shadow-custom hover:bg-violet3 focus:outline-none focus:drop-shadow-checkboxFocus' />
+					</Slider.Root>
+					<span className='ml-3'>{length[0]}</span>
+				</div>
+				<button
+					className='mt-8 rounded-xl bg-violet11 p-3 text-base font-semibold text-white'
+					onClick={() =>
+						generatorPassword(
+							specialCharacters,
+							uppercaseLetters,
+							numbers,
+							length,
+							setPassword
+						)
+					}
+				>
+					Gerar senha
+				</button>
+				<button
+					className='mt-8 rounded-xl border-2 border-violet11 bg-transparent p-3 text-base font-semibold text-violet11'
+					onClick={sair}
+				>
+					Sair
+				</button>
+			</div>
+			<div className='col-center'>
+				<Avatar.Root className='flex-center h-36 w-36 select-none overflow-hidden rounded-full bg-blackA3 align-middle'>
+					{user && (
+						<Avatar.Image
+							className='cover rounded-inherit h-full w-full'
+							src={`https://github.com/${user}.png`}
+							alt='Colm Tuite'
+						/>
+					)}
+					<Avatar.Fallback
+						className='AvatarFallback'
+						delayMs={600}
+					>
+						{user}
+					</Avatar.Fallback>
+				</Avatar.Root>
+				<h1 className={'mb-5 text-2xl font-bold text-black'}>Sua senha é:</h1>
+				<h1 className={'mb-5 text-2xl font-bold text-black'}>{password}</h1>
+			</div>
+		</div>
+	)
 }

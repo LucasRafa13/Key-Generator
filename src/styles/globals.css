@@ -3,9 +3,6 @@
 @tailwind utilities;
 @import "@radix-ui/colors/blackA.css";
 @import "@radix-ui/colors/violet.css";
-/* .gradientBackground {
-  @apply bg-gradient-to-r from-blue-500 to-purple-500;
-} */
 
 .col {
   @apply flex flex-col;
@@ -21,4 +18,20 @@
 
 .col-center-just {
   @apply flex flex-col justify-center;
+}
+
+.flex-center {
+  @apply flex justify-center items-center;
+}
+
+.flex-center-just {
+  @apply flex justify-center;
+}
+
+.flex-center-items {
+  @apply flex items-center;
+}
+
+.rounded-inherit {
+  border-radius: inherit;
 }
