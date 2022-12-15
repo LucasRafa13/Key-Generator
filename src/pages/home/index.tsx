@@ -32,29 +32,31 @@ export default function Home() {
 	}
 
 	return (
-		<div className='h-full'>
-			<div className='col fixed top-1/2 left-[2%] w-[400px] -translate-y-1/2 rounded-xl bg-white p-5 text-black drop-shadow-custom md:relative md:mb-8'>
+		<div className='h-full flex-center-items gap-10 md:flex-col'>
+			<div className='h-full rounded-xl bg-white p-5 text-black drop-shadow-custom w-[350px] md:w-full md:h-fit'>
 				<h1 className={'mb-5 text-center  text-2xl font-bold text-black'}>
 					Configurações
 				</h1>
-				<CheckboxRoot
-					id='checkbox1'
-					label='Caracteres especiais'
-					setValue={setSpecialCharacters}
-					value={specialCharacters}
-				/>
-				<CheckboxRoot
-					id='checkbox2'
-					label='Letras maiúsculas'
-					value={uppercaseLetters}
-					setValue={setUppercaseLetters}
-				/>
-				<CheckboxRoot
-					id='checkbox3'
-					label='Números'
-					value={numbers}
-					setValue={setNumbers}
-				/>
+				<div>
+					<CheckboxRoot
+						id='checkbox1'
+						label='Caracteres especiais'
+						setValue={setSpecialCharacters}
+						value={specialCharacters}
+					/>
+					<CheckboxRoot
+						id='checkbox2'
+						label='Letras maiúsculas'
+						value={uppercaseLetters}
+						setValue={setUppercaseLetters}
+					/>
+					<CheckboxRoot
+						id='checkbox3'
+						label='Números'
+						value={numbers}
+						setValue={setNumbers}
+					/>
+				</div>
 
 				<div className='flex-center-items justify-start'>
 					<Slider.Root
@@ -73,29 +75,31 @@ export default function Home() {
 					</Slider.Root>
 					<span className='ml-3'>{length[0]}</span>
 				</div>
-				<button
-					className='mt-8 rounded-xl bg-violet11 p-3 text-base font-semibold text-white'
-					onClick={() =>
-						generatorPassword(
-							specialCharacters,
-							uppercaseLetters,
-							numbers,
-							length,
-							setPassword
-						)
-					}
-				>
-					Gerar senha
-				</button>
-				<button
-					className='mt-8 rounded-xl border-2 border-violet11 bg-transparent p-3 text-base font-semibold text-violet11'
-					onClick={sair}
-				>
-					Sair
-				</button>
+				<div className='flex gap-4'>
+					<button
+						className='mt-8 rounded-xl bg-violet11 p-3 text-base font-semibold text-white w-full'
+						onClick={() =>
+							generatorPassword(
+								specialCharacters,
+								uppercaseLetters,
+								numbers,
+								length,
+								setPassword
+							)
+						}
+					>
+						Gerar senha
+					</button>
+					<button
+						className='mt-8 rounded-xl border-2 border-violet11 bg-transparent p-3 text-base font-semibold text-violet11 w-full'
+						onClick={sair}
+					>
+						Sair
+					</button>
+				</div>
 			</div>
-			<div className='col-center'>
-				<Avatar.Root className='flex-center h-36 w-36 select-none overflow-hidden rounded-full bg-blackA3 align-middle'>
+			<div className='col-center gap-5 w-full'>
+				<Avatar.Root className='flex-center h-52 w-52 select-none overflow-hidden rounded-full bg-blackA3 align-middle'>
 					{user && (
 						<Avatar.Image
 							className='cover rounded-inherit h-full w-full'
@@ -104,14 +108,18 @@ export default function Home() {
 						/>
 					)}
 					<Avatar.Fallback
-						className='AvatarFallback'
+						className='h-full w-full'
 						delayMs={600}
 					>
 						{user}
 					</Avatar.Fallback>
 				</Avatar.Root>
-				<h1 className={'mb-5 text-2xl font-bold text-black'}>Sua senha é:</h1>
-				<h1 className={'mb-5 text-2xl font-bold text-black'}>{password}</h1>
+				<div className='text-center'>
+					<h1 className={'mb-5 text-2xl font-bold text-black'}>Sua senha é:</h1>
+					<h1 className={'mb-5 text-2xl font-bold text-black break-all'}>
+						{password}
+					</h1>
+				</div>
 			</div>
 		</div>
 	)
