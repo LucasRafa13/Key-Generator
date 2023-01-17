@@ -8,12 +8,18 @@ import { generatorPassword } from '../../utils/generatorPassword'
 export default function Home() {
 	const router = useRouter()
 
+	const [copied, setCopied] = useState(false)
 	const [specialCharacters, setSpecialCharacters] = useState(false)
 	const [uppercaseLetters, setUppercaseLetters] = useState(false)
 	const [numbers, setNumbers] = useState(false)
 	const [length, setLength] = useState([4])
 	const [user, setUser] = useState('')
 	const [password, setPassword] = useState('')
+
+	const copyPassword = () => {
+		navigator.clipboard.writeText(password)
+		setCopied(true)
+	}
 
 	useEffect(() => {
 		setUser(localStorage.username)
@@ -116,9 +122,21 @@ export default function Home() {
 				</Avatar.Root>
 				<div className='text-center'>
 					<h1 className={'mb-5 text-2xl font-bold text-black'}>Sua senha é:</h1>
-					<h1 className={'mb-5 text-2xl font-bold text-black break-all'}>
-						{password}
-					</h1>
+					{password.length > 0 && (
+						<>
+							<span className='text-black text-xs'>
+								{copied ? 'Copiado!' : 'Clique na senha para copiar'}
+							</span>
+							<h1
+								onClick={copyPassword}
+								className={
+									'mb-5 text-2xl font-bold text-black break-all p-2 hover:bg-violet-700 rounded cursor-copy'
+								}
+							>
+								{password}
+							</h1>
+						</>
+					)}
 				</div>
 			</div>
 		</div>
